@@ -7,8 +7,8 @@
         <link rel="stylesheet" href="{% static 'beverages/css/styles.css' %}">
     </head>
     <body>
-        <h3>Hello {{ request.session.user.alias }}</h3>
         <h4><a href="/logout">Logout</a></h4>
+        <h3>Hello {{ request.session.user.alias }}</h3>
         <h1>Whisky Review</h1>
         <p><a href="{% url 'beverages:add_form' %}">Add Whiskey and Review</a></p>
         <table>
@@ -20,7 +20,10 @@
                     <tr>
                         <td>{{ whisky.name }}</td>
                         <td><a href="{% url 'beverages:distiller_info' whisky.distiller.id %}">{{ whisky.distiller.name_distiller }}</a></td>
-                        <td><a href="{% url 'beverages:delete' whisky.id %}">Delete</a></td>
+                        <td>
+                            <a href="{% url 'beverages:delete' whisky.id %}">Delete</a> |
+                            <button type="button" name="button">Tried It!</button> |
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

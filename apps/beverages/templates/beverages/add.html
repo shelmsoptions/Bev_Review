@@ -7,8 +7,8 @@
         <link rel="stylesheet" href="{% static 'beverages/css/styles.css' %}">
     </head>
     <body>
-        <h3>Hello {{ request.session.user.alias }}</h3>
         <h4><a href="{% url 'beverages:index' %}">Home</a> | <a href="/logout">Logout</a></h4>
+        <h3>Hello {{ request.session.user.alias }}</h3>
         <h3>Add Whisky</h3>
         <h3>Add Review</h3>
         <form class="" action="{% url 'beverages:add' %}" method="post">

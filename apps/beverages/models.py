@@ -42,6 +42,11 @@ class DistillerManager(models.Manager):
     def delete_distiller(self, request, id):
         Distiller.objects.get(id=id).delete()
 
+    def exclude_current_distiller(self, distiller_id):
+        distiller_id = distiller_id.id
+        other_distillers = Distiller.objects.values().exclude(id=distiller_id)
+        return other_distillers
+
 
 class ReviewManager(models.Manager):
     def create_review(self, request, new_id):

@@ -5,8 +5,8 @@
         <title>Update Distiller</title>
     </head>
     <body>
-        <h3>Hello {{ request.session.user.alias }}</h3>
         <h4><a href="{% url 'beverages:index' %}">Home</a> | <a href="/logout">Logout</a></h4>
+        <h3>Hello {{ request.session.user.alias }}</h3>
         <h3>Update Distiller Form</h3>
         <h2>{{ this_distiller.name_distiller }}</h2>
         <form class="" action="{% url 'beverages:update_distiller' this_distiller.id %}" method="post">

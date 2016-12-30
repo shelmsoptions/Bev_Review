@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from ..login_and_registration.models import User
 from models import Distiller, Beverage
 from django.contrib import messages
+from . import models
 
 def index(request):
     if 'user' in request.session:
@@ -46,9 +47,11 @@ def edit(request, id):
 
 def distiller_info(request, id):
     print 'distiller_info id: ', id
+    this_distiller = Distiller.objects.get(id=id)
     context = {
-        'this_distiller': Distiller.objects.get(id=id),
+        'this_distiller': this_distiller,
         'distillers': Distiller.objects.all(),
+        'other_distillers': Distiller.objects.exclude_current_distiller(this_distiller),
     }
     return render(request, 'beverages/distiller.html', context)
 
@@ -87,6 +90,6 @@ def delete(request, id):
 def delete_distiller(request, id):
     if 'user' in request.session:
         Distiller.objects.delete_distiller(request, id)
-        # ha! exclude the chosen distiller, then redirect back to beverages:distiller_info   *****************
-        return redirect('beverages:index')
+        # ha! exclude the chosen distiller, then redirect back to beverages:distiller_info...well...kinda forcing it back to id = 1 (Ardbeg) *****************
+        return redirect('beverages:distiller_info', 1)
     return redirect('login:index')

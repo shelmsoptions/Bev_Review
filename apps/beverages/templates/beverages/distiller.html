@@ -2,13 +2,13 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Destiller</title>
+        <title>Distiller</title>
         {% load staticfiles %}
         <link rel="stylesheet" href="{% static 'beverages/css/styles.css' %}">
     </head>
     <body>
-        <h3>Hello {{ request.session.user.alias }}</h3>
         <h4><a href="{% url 'beverages:index' %}">Home</a> | <a href="/logout">Logout</a></h4>
+        <h3>Hello {{ request.session.user.alias }}</h3>
         <h3>Distiller: {{ this_distiller.name_distiller }}</h3>
         <h4>Information:</h4>
         <p>{{ this_distiller.info }}</p>
@@ -19,7 +19,7 @@
                 <th>Distiller</th><th>Action</th>
             </thead>
             <tbody>
-                {% for distiller in distillers %}
+                {% for distiller in other_distillers %}
                     <tr>
                         <td><a href="{% url 'beverages:distiller_info' distiller.id %}">{{ distiller.name_distiller }}</a></td>
                         <td>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Beverages</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'beverages/css/styles.css' %}">
+    </head>
+    <body>
+        <h3>Hello {{ request.session.user.alias }}</h3>
+        <h4><a href="/logout">Logout</a></h4>
+        <h1>Whisky Review</h1>
+        <p><a href="{% url 'beverages:add_form' %}">Add Whiskey and Review</a></p>
+        <table>
+            <thead>
+                <th>Whisky</th><th>Distiller</th><th>Action</th>
+            </thead>
+            <tbody>
+                {% for whisky in whiskies %}
+                    <tr>
+                        <td>{{ whisky.name }}</td>
+                        <td><a href="{% url 'beverages:distiller_info' whisky.distiller.id %}">{{ whisky.distiller.name_distiller }}</a></td>
+                        <td><a href="{% url 'beverages:delete' whisky.id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

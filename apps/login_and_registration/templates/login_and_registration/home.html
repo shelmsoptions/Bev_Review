@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Home Page</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'login_and_registration/css/styles.css' %}">
+    </head>
+    <body>
+        <h3>Welcome Home, {{ request.session.user.first_name }} {{ request.session.user.last_name}} - User#{{ request.session.user.user_id }}</h3>
+        <h4><a href="/logout">Logout</a></h4>
+        <!-- {% if reg_message %}<h3>{{ reg_message }}</h3>{% endif %} -->
+        <!-- {% if login_message %}<h3>{{ login_message }}</h3>{% endif %} -->
+
+        <table class="home">
+            <thead>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Alias</th>
+                <th>Email Address</th>
+                <!-- <th>Password - remove</th> -->
+                <th>Date Created</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <!--  pass in all users not just the NEW USER  -->
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name}}</td>
+                        <td>{{ user.alias }}</td>
+                        <td>{{ user.email }}</td>
+                        <!-- <td>{{ user.password }}</td> -->
+                        <td>{{ user.created_at }}</td>
+                        <td><a href="/home/{{ user.id }}/delete">Remove</a> | <a href="{% url 'login:edit' user.id %}">Update</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

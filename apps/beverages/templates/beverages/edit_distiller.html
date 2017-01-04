@@ -13,7 +13,11 @@
             {% csrf_token %}
             <p>
                 <label for="name_distiller">Name: </label>
-                <input type="text" name="name_distiller" value="">
+                <input type="text" name="name_distiller" value="{{ this_distiller.name_distiller }}">
+            </p>
+            <p>
+                <label for="distiller_details">Details: </label>
+                <input type="text" name="distiller_details" value="{{ this_distiller.distiller_details }}">
             </p>
             <input type="submit" name="submit_changes" value="Update">
 

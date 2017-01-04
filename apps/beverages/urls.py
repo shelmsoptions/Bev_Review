@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^update_distiller/(?P<id>\d+)', views.update_distiller, name='update_distiller'),
     url(r'^delete/(?P<id>\d+)', views.delete, name='delete'),
     url(r'^delete_distiller/(?P<id>\d+)', views.delete_distiller, name='delete_distiller'),
+    url(r'^favor/(?P<id>\d+)', views.favor, name='favor'),
+    # url(r'^create_try/(?P<id>\d+)', views.create_try, name='create_try'),
 
 
 ]

@@ -37,6 +37,7 @@ class DistillerManager(models.Manager):
         distiller = Distiller.objects.get(id=distiller_id)
         # print distiller
         distiller.name_distiller = request.POST['name_distiller']
+        distiller.distiller_details = request.POST['distiller_details']
         distiller.save()
 
     def delete_distiller(self, request, id):
@@ -47,6 +48,9 @@ class DistillerManager(models.Manager):
         other_distillers = Distiller.objects.values().exclude(id=distiller_id)
         return other_distillers
 
+# class TryManager(models.Manager):
+#     def create_try(self, beverage_id, user_id):
+#         pass
 
 class ReviewManager(models.Manager):
     def create_review(self, request, new_id):
@@ -55,8 +59,20 @@ class ReviewManager(models.Manager):
         review = Review.objects.create(review_content=request.POST['review'], reviewer=reviewer, bev_reviewed=beverage_reviewed)
 
 
+class FavorPointManager(models.Manager):
+    def create_favor(request, user_id, beverage_id):
+        exists = FavorPoint.objects.filter(favor_user=user_id, favor_beverage=beverage_id)
+        # , favor_point=request.POST['favor_point']+1
+        if exists:
+            print 'exists: ', exists
+        else:
+            # VV  check the use of '_id' appended to favor_user and favor_beverage...  VV
+            FavorPoint.objects.create(favor_user_id=user_id, favor_beverage=beverage_id)
+
+
 class Distiller(models.Model):
     name_distiller = models.CharField(max_length=70)
+    distiller_details = models.TextField(max_length=1000, default='details go here')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = DistillerManager()
@@ -75,3 +91,19 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ReviewManager()
+
+class FavorPoint(models.Model):
+    favor_user = models.ForeignKey(User, related_name='favor_user')
+    favor_beverage = models.ForeignKey(Beverage, related_name='favor_beverage')
+    favor_point = models.IntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = FavorPointManager()
+
+# class Try(models.Model):
+#     tried = models.BooleanField()
+#     try_beverage = models.ForeignKey(Beverage)
+#     try_user = models.ForeignKey(User)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     object = TryManager()

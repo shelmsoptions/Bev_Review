@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from ..login_and_registration.models import User
-from models import Distiller, Beverage
+from models import Distiller, Beverage, FavorPoint
 from django.contrib import messages
 from . import models
 
@@ -90,6 +90,36 @@ def delete(request, id):
 def delete_distiller(request, id):
     if 'user' in request.session:
         Distiller.objects.delete_distiller(request, id)
-        # ha! exclude the chosen distiller, then redirect back to beverages:distiller_info...well...kinda forcing it back to id = 1 (Ardbeg) *****************
+        # ha! exclude the chosen distiller, then redirect back to beverages:distiller_info...well...kinda ghetto forcing it back to id = 1 (Ardbeg) *****************
         return redirect('beverages:distiller_info', 1)
     return redirect('login:index')
+
+# def create_try(request, id):
+#     if 'user' in request.session:
+#         # user = User.objects.get(id=id)
+#         beverage = Beverage.objects.get(id=id)
+#         print beverage
+#         # print user
+#         return render(request, 'beverages:index')
+
+def favor(request, id):
+    if 'user' in request.session:
+        if request.method == 'POST':
+            print 'user id: ', request.session['user']['user_id']
+            # Favor.objects.create_favor(request.session.user.id), request.POST['whisky.id']
+            favor_user = request.session['user']['user_id']
+            favor_beverage = Beverage.objects.get(id=id)
+            print 'favor_beverage: ', favor_beverage.id
+            FavorPoint.objects.create_favor(favor_user, favor_beverage)
+            # context = {
+            #     'favor_user': request.session['user']['user_id'],
+            #     'favor_beverage': whisky,
+            # }
+            # context = {
+            #     'whiskies': Beverage.objects.all(),
+            #     'distillers': Distiller.objects.all(),
+            # }
+            # return render(request, 'beverages/index.html', context)
+            return redirect('beverages:index')
+        else:
+            return redirect('beverages:index')

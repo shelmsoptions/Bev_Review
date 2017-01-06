@@ -35,6 +35,10 @@
                     <p class="red">{{ message }}</p>
                 {% endfor %}
             {% endif %}
+            <p>
+                <label for="review">Review: </label>
+                <textarea name="review" rows="8" cols="80"></textarea>
+            </p>
             <input type="submit" name="submit_new" value="Add">
             <a href="{% url 'beverages:index' %}">Cancel</a>
             <!-- <form class="" action="{% url 'beverages:index' %}" method="get">

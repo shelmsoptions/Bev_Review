@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect
 from ..login_and_registration.models import User
-from models import Distiller, Beverage, FavorPoint
+from models import Distiller, Beverage, FavorPoint, Review
 from django.contrib import messages
 from . import models
+# from django.db.models import Lookup
 
 def index(request):
     if 'user' in request.session:
+        # beverage_id =
         context = {
-            'whiskies': Beverage.objects.all(),
+            'whiskies': Beverage.objects.all().order_by('name'),
             'distillers': Distiller.objects.all(),
+            # 'favor_pts': FavorPoint.objects.all().filter(favor_point__favor_beverage=id),
         }
         return render(request, 'beverages/index.html', context)
     return redirect('login:index')
@@ -32,6 +35,23 @@ def add(request):
             display_errors(request, result[1])
             return redirect('beverages:add_form')
         # print result[0]
+        # print result[0], result[1].id
+        Review.objects.add_review(request, result[1].id)
+    return redirect('login:index')
+
+def add_review(request, id):
+    if 'user' in request.session:
+        Review.objects.add_review(request, id)
+        return redirect('beverages:show_review', id)
+    return redirect('login:index')
+
+def show_review(request, id):
+    if 'user' in request.session:
+        context = {
+            'whisky': Beverage.objects.get(id=id),
+            'reviews': Review.objects.filter(bev_reviewed=id),
+        }
+        return render(request, 'beverages/review.html', context)
     return redirect('login:index')
 
 def display_errors(request, display_errors_list):
@@ -46,7 +66,7 @@ def edit(request, id):
     return redirect('login:index')
 
 def distiller_info(request, id):
-    print 'distiller_info id: ', id
+    # print 'distiller_info id: ', id
     this_distiller = Distiller.objects.get(id=id)
     context = {
         'this_distiller': this_distiller,
@@ -105,21 +125,26 @@ def delete_distiller(request, id):
 def favor(request, id):
     if 'user' in request.session:
         if request.method == 'POST':
-            print 'user id: ', request.session['user']['user_id']
             # Favor.objects.create_favor(request.session.user.id), request.POST['whisky.id']
             favor_user = request.session['user']['user_id']
             favor_beverage = Beverage.objects.get(id=id)
+            print 'user id: ', request.session['user']['user_id']
             print 'favor_beverage: ', favor_beverage.id
             FavorPoint.objects.create_favor(favor_user, favor_beverage)
+            FavorPoint.objects.get_favor_count(favor_beverage)
             # context = {
             #     'favor_user': request.session['user']['user_id'],
-            #     'favor_beverage': whisky,
+            #     'favor_pts': FavorPoint.objects.favor_point.filter(beverage_id=id),
             # }
             # context = {
             #     'whiskies': Beverage.objects.all(),
             #     'distillers': Distiller.objects.all(),
+            #     'favor_pts': FavorPoint.objects.all().filter(favor_beverage__favor_beverage=id),
             # }
             # return render(request, 'beverages/index.html', context)
+            # return render(request, 'beverages/index.html')
             return redirect('beverages:index')
         else:
             return redirect('beverages:index')
+    return redirect('login:index')
+

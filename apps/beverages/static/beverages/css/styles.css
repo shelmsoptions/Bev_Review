@@ -20,3 +20,10 @@ h1,h2,h3,h4,h5,h6{
 button{
     padding: 3px;
 }
+.inline-it{
+    display: inline;
+}
+.review-box{
+    /*width: 100px;*/
+    border: 1px solid #666;
+}

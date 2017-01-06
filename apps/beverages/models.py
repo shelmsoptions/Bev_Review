@@ -1,15 +1,23 @@
 from __future__ import unicode_literals
 from ..login_and_registration.models import User
 from django.db import models
+# V  https://docs.djangoproject.com/en/1.7/ref/models/queries/  V 'F' used to get the favor_point value incremented
+from django.db.models import F
+from django.db.models import Count
 
 class BeverageManager(models.Manager):
     def create_beverage(self, request):
         errors = []
         if request.POST['name'] == "":
-            errors.append('Name cannot be empty')
-
+            errors.append('Whisky name cannot be empty')
+            # return (False, errors)
         if request.POST['new_distiller_name'] == "" and request.POST['distiller_name'] == "":
             errors.append('You must either Enter or Select a Distiller Name')
+            # return (False, errors)
+        if request.POST['review'] == "":
+            errors.append('Must type a Review!')
+            # return (False, errors)
+        if errors:
             return (False, errors)
         if request.POST['distiller_name'] == "":
             distiller = Distiller.objects.create(name_distiller=request.POST['new_distiller_name'])
@@ -17,11 +25,8 @@ class BeverageManager(models.Manager):
             # request.POST['new_distiller_name'] == "":
             distiller = Distiller.objects.get(id=request.POST['distiller_name'])
         if not errors:
-            print 'No Errors!!'
-            new_beverage = self.create(
-                name=request.POST['name'],
-                distiller=distiller,
-            )
+            # print 'No Errors!!'
+            new_beverage = self.create(name=request.POST['name'], distiller=distiller,)
             return (True, new_beverage)
         else:
             return (False, errors)
@@ -53,10 +58,15 @@ class DistillerManager(models.Manager):
 #         pass
 
 class ReviewManager(models.Manager):
-    def create_review(self, request, new_id):
-        beverage_reviewed = Beverage.objects.get(id=new_id)
+    def add_review(self, request, bev_id):
+        beverage_reviewed = Beverage.objects.get(id=bev_id)
+        # print beverage_reviewed.id
         reviewer = User.objects.get(id=request.session['user']['user_id'])
+        # print reviewer.id
         review = Review.objects.create(review_content=request.POST['review'], reviewer=reviewer, bev_reviewed=beverage_reviewed)
+
+    def show_review(request, id):
+        pass
 
 
 class FavorPointManager(models.Manager):
@@ -64,11 +74,22 @@ class FavorPointManager(models.Manager):
         exists = FavorPoint.objects.filter(favor_user=user_id, favor_beverage=beverage_id)
         # , favor_point=request.POST['favor_point']+1
         if exists:
-            print 'exists: ', exists
+            FavorPoint.objects.filter(favor_user=user_id, favor_beverage=beverage_id).update(favor_point=F('favor_point')+1)
+            # favor_count = FavorPoint.objects.annotate(num_favors=Count('favor_beverage')).filter(favor_beverage=beverage_id)
+            # print favor_count[0].favor_point
+            # return favor_count[0].favor_point
         else:
-            # VV  check the use of '_id' appended to favor_user and favor_beverage...  VV
             FavorPoint.objects.create(favor_user_id=user_id, favor_beverage=beverage_id)
 
+            # VV  works if there is only 1 beverage_id per single user, breaks if at least two users have favored
+    def get_favor_count(request, beverage_id):
+        # print 'beverage_id: ', beverage_id.id
+        beverage_id = beverage_id.id
+        # favor_count = FavorPoint.objects.filter(favor_beverage=beverage_id).filter(favor_user=user_id).annotate(num_favors=Count('favor_beverage'))
+        favor_count = FavorPoint.objects.filter(favor_beverage=beverage_id).annotate(num_favors=Count('favor_point'))
+        print 'user favor points: ', favor_count[0].favor_point
+        # return favor_count[0].favor_point
+        return favor_count
 
 class Distiller(models.Model):
     name_distiller = models.CharField(max_length=70)

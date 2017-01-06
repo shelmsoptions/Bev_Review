@@ -37,6 +37,16 @@ class BeverageManager(models.Manager):
         # print 'id: ', id
         Beverage.objects.get(id=id).delete()
 
+    def favor_beverage_total(request, beverage_id):
+        # favor_total = Beverage.objects.favor_total
+        # if favor_total != 0:
+        print beverage_id.id
+        beverage_id = beverage_id.id
+        Beverage.objects.filter(id=beverage_id).update(favor_total=F('favor_total')+1)
+        # else:
+        #     Beverage.objects.filter(id=beverage_id).update(favor_total=F('favor_total')+1)
+
+
 class DistillerManager(models.Manager):
     def update_distiller(self, distiller_id, request):
         distiller = Distiller.objects.get(id=distiller_id)
@@ -82,12 +92,12 @@ class FavorPointManager(models.Manager):
             FavorPoint.objects.create(favor_user_id=user_id, favor_beverage=beverage_id)
 
             # VV  works if there is only 1 beverage_id per single user, breaks if at least two users have favored
-    def get_favor_count(request, beverage_id):
+    def get_favor_count(request, user_id, beverage_id):
         # print 'beverage_id: ', beverage_id.id
         beverage_id = beverage_id.id
-        # favor_count = FavorPoint.objects.filter(favor_beverage=beverage_id).filter(favor_user=user_id).annotate(num_favors=Count('favor_beverage'))
-        favor_count = FavorPoint.objects.filter(favor_beverage=beverage_id).annotate(num_favors=Count('favor_point'))
-        print 'user favor points: ', favor_count[0].favor_point
+        favor_count = FavorPoint.objects.filter(favor_beverage=beverage_id).filter(favor_user=user_id).annotate(num_favors=Count('favor_beverage'))
+        # favor_count = FavorPoint.objects.get(favor_beverage=beverage_id).annotate(num_favors=Count('favor_point'))
+        print '(user) favor points: ', favor_count[0].favor_point
         # return favor_count[0].favor_point
         return favor_count
 
@@ -101,6 +111,7 @@ class Distiller(models.Model):
 class Beverage(models.Model):
     name = models.CharField(max_length=70)
     distiller = models.ForeignKey(Distiller)
+    favor_total = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = BeverageManager()

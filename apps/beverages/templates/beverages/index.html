@@ -21,7 +21,7 @@
                     <tr>
                         <td><a href="{% url 'beverages:show_review' whisky.id %}">{{ whisky.name }}</a></td>
                         <td><a href="{% url 'beverages:distiller_info' whisky.distiller.id %}">{{ whisky.distiller.name_distiller }}</a></td>
-                        <td>{{ favor_pts }}</td>
+                        <td class="favor-cell">{{ whisky.favor_total }}</td>
                         <td>
                             <a href="{% url 'beverages:delete' whisky.id %}" class="inline-it">Delete</a> |
                             <form class="inline-it" action="{% url 'beverages:favor' whisky.id %}" method="post">

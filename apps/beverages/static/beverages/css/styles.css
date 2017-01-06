@@ -27,3 +27,8 @@ button{
     /*width: 100px;*/
     border: 1px solid #666;
 }
+td.favor-cell{
+    text-align: center;
+    font-weight: bold;
+    font-size: 110%;
+}

@@ -47,9 +47,12 @@ def add_review(request, id):
 
 def show_review(request, id):
     if 'user' in request.session:
+        user_id = request.session['user']['user_id']
         context = {
             'whisky': Beverage.objects.get(id=id),
             'reviews': Review.objects.filter(bev_reviewed=id),
+            'favor_points': FavorPoint.objects.filter(favor_beverage=id),
+            'favor_points_by_user': FavorPoint.objects.filter(favor_beverage=id),
         }
         return render(request, 'beverages/review.html', context)
     return redirect('login:index')

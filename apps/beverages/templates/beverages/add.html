@@ -7,43 +7,48 @@
         <link rel="stylesheet" href="{% static 'beverages/css/styles.css' %}">
     </head>
     <body>
-        <h4><a href="{% url 'beverages:index' %}">Home</a> | <a href="/logout">Logout</a></h4>
-        <h3>Hello {{ request.session.user.alias }}</h3>
-        <h3>Add Whisky</h3>
-        <h3>Add Review</h3>
-        <form class="" action="{% url 'beverages:add' %}" method="post">
-            {% csrf_token %}
-            <p>
-                <label for="name">Whisky Name: </label>
-                <input type="text" name="name" value="">
-            </p>
-            <p>
-                <label for="new_distiller_name">(admin) Enter Distiller: </label>
-                <input type="text" name="new_distiller_name" value="">
-            </p>
-            <p>
-                <label for="distiller_name">Select Distiller: </label>
-                <select class="" name="distiller_name">
-                    <option value=""></option>
-                    {% for distiller in distillers %}
-                        <option value="{{ distiller.id }}">{{ distiller.name_distiller }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            {% if messages %}
-                {% for message in messages %}
-                    <p class="red">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-            <p>
-                <label for="review">Review: </label>
-                <textarea name="review" rows="8" cols="80"></textarea>
-            </p>
-            <input type="submit" name="submit_new" value="Add">
-            <a href="{% url 'beverages:index' %}">Cancel</a>
-            <!-- <form class="" action="{% url 'beverages:index' %}" method="get">
-                <input type="submit" name="" value="Cancel">
-            </form> -->
-        </form>
+        <div id="wrapper-outer">
+            <div id="wrapper-inner">
+                <h5>User: {{ request.session.user.first_name }} {{ request.session.user.last_name }} ({{ request.session.user.email }})</h5>
+                <h5><a href="{% url 'beverages:index' %}">Home</a> | <a href="/logout">Logout</a></h5>
+                <h4>Hello {{ request.session.user.alias }}</h4>
+                <h3>Add Whisky</h3>
+                <h3>Add Review</h3>
+                <form class="" action="{% url 'beverages:add' %}" method="post">
+                    {% csrf_token %}
+                    <p>
+                        <label for="name">Whisky Name: </label>
+                        <input type="text" name="name" value="">
+                    </p>
+                    <p>
+                        <label for="new_distiller_name">(admin) Enter Distiller: </label>
+                        <input type="text" name="new_distiller_name" value="">
+                    </p>
+                    <p>
+                        <label for="distiller_name">Select Distiller: </label>
+                        <select class="" name="distiller_name">
+                            <option value=""></option>
+                            {% for distiller in distillers %}
+                                <option value="{{ distiller.id }}">{{ distiller.name_distiller }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p class="red">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    <p>
+                        <label for="review">Review: </label>
+                        <textarea name="review" rows="8" cols="80"></textarea>
+                    </p>
+                    <input type="submit" name="submit_new" value="Add Whisky and Review">
+                    <a href="{% url 'beverages:index' %}">Cancel</a>
+                    <!-- <form class="" action="{% url 'beverages:index' %}" method="get">
+                        <input type="submit" name="" value="Cancel">
+                    </form> -->
+                </form>
+            </div>
+        </div>
     </body>
 </html>

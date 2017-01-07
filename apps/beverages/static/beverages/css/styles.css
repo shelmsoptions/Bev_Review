@@ -5,30 +5,53 @@
 body{
     font-family: verdana, sans-serif;
 }
-table, thead, th, tr, td{
-    border: 1px solid #ccc;
-}
-td{
-    padding: 4px;
-}
-.red{
-    color: red;
-}
-h1,h2,h3,h4,h5,h6{
-    margin: 5px 0 0 0;
-}
-button{
-    padding: 3px;
-}
-.inline-it{
-    display: inline;
-}
-.review-box{
-    /*width: 100px;*/
-    border: 1px solid #666;
-}
-td.favor-cell{
-    text-align: center;
-    font-weight: bold;
-    font-size: 110%;
-}
+    #wrapper-outer{
+        width: 70%;
+        margin: 0 auto;
+        background-color: #666;
+    }
+    #wrapper-inner{
+        width: 65%;
+        margin: 0 auto;
+        background-color: #e0e0e0;
+        padding: 5px;
+    }
+        table{
+            margin: 0 auto;
+            min-width: 600px;
+        }
+        table, thead, th, tr, td{
+            border: 1px solid #ccc;
+        }
+        td{
+            padding: 4px;
+        }
+        td.favor-cell{
+            text-align: center;
+            font-weight: bold;
+            font-size: 110%;
+            }
+        .red{
+            color: red;
+        }
+        h1,h2,h3,h4,h5,h6{
+            margin: 5px 0 0 0;
+        }
+        button{
+            padding: 3px;
+        }
+        .inline-it{
+            display: inline;
+        }
+        .review-box{
+            font-size: 85%;
+            width: 500px;
+            border: 1px solid #666;
+            margin: 5px auto 0 auto;
+            padding: 2px;
+            border-radius: 2px;
+            background-color: #fff;
+        }
+            .font-size-85{
+                font-size: 85%;
+            }

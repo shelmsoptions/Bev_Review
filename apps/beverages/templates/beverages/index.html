@@ -12,6 +12,9 @@
                 <h4>User: {{ request.session.user.first_name }} {{ request.session.user.last_name }} ({{ request.session.user.email }})</h4>
                 <h4><a href="/logout">Logout</a></h4>
                 <h3>Hello {{ request.session.user.alias }}</h3>
+                <p class="font-size-85">Click on the Whisky in the table below to view other user reviews and add your own review.</p>
+                <p class="font-size-85">Click on a Distiller for more information.</p>
+                <p class="font-size-85">Click the '+1 Favor Pt' button as many times as you like to Favor that Whisky!  Personal Favor score is visible in the Whisky Review page.</p>
                 <h1>Whisky and Bourbon Review</h1>
                 <p><a href="{% url 'beverages:add_form' %}">Add Whiskey and Review</a></p>
                 <table>

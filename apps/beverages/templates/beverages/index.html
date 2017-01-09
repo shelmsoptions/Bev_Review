@@ -16,6 +16,23 @@
                 <p class="font-size-85">Click on a Distiller for more information.</p>
                 <p class="font-size-85">Click the '+1 Favor Pt' button as many times as you like to Favor that Whisky!  Personal Favor score is visible in the Whisky Review page.</p>
                 <h1>Whisky and Bourbon Review</h1>
+                <h4>Recent Reviews</h4>
+                {% for favor_point in favor_pts %}
+                    <p class="font-size-85 red">
+                        {{ favor_point.favor_user.alias }} reviewed
+                        {{ favor_point.favor_beverage.name }} and gave it
+                        {{ favor_point.favor_point }} Favor Points {{ favor_point.created_at }}
+                    </p>
+                {% endfor %}
+                <!-- <h4>Recent Favor Points</h4>
+                {% for favor_point in favor_pts %}
+                    <p class="font-size-85 red">
+                        {{ favor_point.favor_user.alias }} has assigned
+                        {{ favor_point.favor_point }} Favor Points to
+                        {{ favor_point.favor_beverage.name }}
+                    </p>
+                {% endfor %} -->
+                <p class="font-size-85 red">...</p>
                 <p><a href="{% url 'beverages:add_form' %}">Add Whiskey and Review</a></p>
                 <table>
                     <thead>

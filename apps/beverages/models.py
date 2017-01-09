@@ -97,7 +97,7 @@ class FavorPointManager(models.Manager):
         beverage_id = beverage_id.id
         favor_count = FavorPoint.objects.filter(favor_beverage=beverage_id).filter(favor_user=user_id).annotate(num_favors=Count('favor_beverage'))
         # favor_count = FavorPoint.objects.get(favor_beverage=beverage_id).annotate(num_favors=Count('favor_point'))
-        print '(user) favor points: ', favor_count[0].favor_point
+        # print '(user) favor points: ', favor_count[0].favor_point
         # return favor_count[0].favor_point
         return favor_count
 

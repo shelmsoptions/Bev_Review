@@ -11,7 +11,7 @@ def index(request):
         context = {
             'whiskies': Beverage.objects.all().order_by('distiller__name_distiller'),
             'distillers': Distiller.objects.all(),
-            'favor_pts': FavorPoint.objects.all(),
+            'favor_pts': FavorPoint.objects.all().order_by('-created_at')[:3],
         }
         return render(request, 'beverages/index.html', context)
     return redirect('login:index')
@@ -131,8 +131,8 @@ def favor(request, id):
             # Favor.objects.create_favor(request.session.user.id), request.POST['whisky.id']
             favor_user = request.session['user']['user_id']
             favor_beverage = Beverage.objects.get(id=id)
-            print 'user id: ', request.session['user']['user_id']
-            print 'favor_beverage: ', favor_beverage.id
+            # print 'user id: ', request.session['user']['user_id']
+            # print 'favor_beverage: ', favor_beverage.id
             FavorPoint.objects.create_favor(favor_user, favor_beverage)
             Beverage.objects.favor_beverage_total(favor_beverage)
             # context = {
